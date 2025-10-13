@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: finaltest-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@finaltest.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    restart: unless-stopped
+
+volumes:
+  pgadmin-data:
+    driver: local
+

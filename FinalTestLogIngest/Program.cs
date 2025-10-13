@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using FinalTestLogIngest.Options;
+using FinalTestLogIngest.Persistence;
 
 namespace FinalTestLogIngest;
 
@@ -37,6 +39,11 @@ public class Program
                     .Bind(context.Configuration.GetSection("Parsing"))
                     .ValidateDataAnnotations()
                     .ValidateOnStart();
+
+                // Configure Marten document store
+                var databaseOptions = context.Configuration.GetSection("Database").Get<DatabaseOptions>()
+                    ?? throw new InvalidOperationException("Database configuration is required");
+                services.AddMartenStore(databaseOptions);
 
                 // Background services will be registered here in later phases
             })

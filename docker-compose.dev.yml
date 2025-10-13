@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  postgres-dev:
+    image: postgres:16-alpine
+    container_name: finaltest-postgres-dev
+    environment:
+      POSTGRES_USER: finaltest_user
+      POSTGRES_PASSWORD: finaltest_dev_password
+      POSTGRES_DB: finaltest_logs
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-dev-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U finaltest_user -d finaltest_logs"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  postgres-dev-data:
+    driver: local
+

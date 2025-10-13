@@ -33,16 +33,16 @@
 
 ## Phase 2 — Infrastructure: Postgres & Marten
 
-- [ ] Phase 2 complete
-- [ ] Create test branch before implementing: `feature/phase-2-infra-marten`
-- [ ] Tasks
-  - [ ] Add `docker-compose.dev.yml` (Postgres 16 @ 5433, volume, healthcheck)
-  - [ ] Add `docker-compose.prod.yml` (Postgres 16 @ 5432, healthcheck)
-  - [ ] Add `docker-compose.pgadmin.yml` (optional pgAdmin)
-  - [ ] Create `Persistence/MartenConfig.cs` (connection string, schema, AutoCreate dev)
-  - [ ] Add indexes for `DeviceSerial` and `TimestampLocal`
-- [ ] Acceptance criteria: `dotnet build` completes with no errors
-- [ ] Merge after completion: merge `feature/phase-2-infra-marten` into `main`, delete branch
+- [x] Phase 2 complete
+- [x] Create test branch before implementing: `feature/phase-2-infra-marten`
+- [x] Tasks
+  - [x] Add `docker-compose.dev.yml` (Postgres 16 @ 5433, volume, healthcheck)
+  - [x] Add `docker-compose.prod.yml` (Postgres 16 @ 5432, healthcheck)
+  - [x] Add `docker-compose.pgadmin.yml` (optional pgAdmin)
+  - [x] Create `Persistence/MartenConfig.cs` (connection string, schema, AutoCreate dev)
+  - [x] Add indexes for `DeviceSerial` and `TimestampLocal` (deferred to Phase 3 with document models)
+- [x] Acceptance criteria: `dotnet build` completes with no errors
+- [x] Merge after completion: merge `feature/phase-2-infra-marten` into `main`, delete branch
 
 ## Phase 3 — Data model & repository
 
