@@ -60,19 +60,19 @@
 
 ## Phase 4 — Parser
 
-- [ ] Phase 4 complete
-- [ ] Create test branch before implementing: `feature/phase-4-parser`
-- [ ] Tasks
-  - [ ] Use sequential thinking to decompose parsing logic and handle edge cases
-  - [ ] Create `Parsing/FinalTestLogParser.cs`
-  - [ ] Robust section parsing using `sv-SE` culture (decimal comma), tolerant whitespace
-  - [ ] Parse headers, current result, repeated "Signal Strength Data" blocks, arrays, matrices
-  - [ ] Build deterministic `Id` from DeviceSerial + Date + Time (local time)
-  - [ ] Return parsed `FinalTestLog` + raw text
-  - [ ] Build verification: run `dotnet build` to ensure no compilation errors
-  - [ ] If errors occur: use fetch and context7 tools to research and resolve build errors
-- [ ] Acceptance criteria: `dotnet build` completes with no errors; parser compiles and integrates with models
-- [ ] Merge after completion: merge `feature/phase-4-parser` into `main`, delete branch
+- [x] Phase 4 complete
+- [x] Create test branch before implementing: `feature/phase-4-parser`
+- [x] Tasks
+  - [x] Use sequential thinking to decompose parsing logic and handle edge cases
+  - [x] Create `Parsing/FinalTestLogParser.cs`
+  - [x] Robust section parsing using `sv-SE` culture (decimal comma), tolerant whitespace
+  - [x] Parse headers, current result, repeated "Signal Strength Data" blocks, arrays, matrices
+  - [x] Build deterministic `Id` from DeviceSerial + Date + Time (local time)
+  - [x] Return parsed `FinalTestLog` + raw text
+  - [x] Build verification: run `dotnet build` to ensure no compilation errors
+  - [x] If errors occur: use fetch and context7 tools to research and resolve build errors
+- [x] Acceptance criteria: `dotnet build` completes with no errors; parser compiles and integrates with models
+- [x] Merge after completion: merge `feature/phase-4-parser` into `main`, delete branch
 
 ## Phase 5 — Ingestion pipeline
 
