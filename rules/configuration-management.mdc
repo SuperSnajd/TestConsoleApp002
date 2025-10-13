@@ -1,0 +1,47 @@
+---
+description: "Configuration and environment management rules"
+globs: ["**/appsettings*.json", "**/docker-compose*.yml", "**/Dockerfile"]
+alwaysApply: true
+---
+
+# .NET Configuration Rules
+
+## Environment Variable Configuration - CRITICAL RULE
+
+**NEVER use shell-style environment variable syntax in .NET configuration files**
+
+### ❌ WRONG - Shell-style syntax (NOT supported by .NET):
+```json
+{
+  "ConnectionStrings": {
+    "Database": "Host=${POSTGRES_HOST:-localhost};Port=${POSTGRES_PORT:-5432};"
+  }
+}
+```
+
+### ✅ CORRECT - Use direct values or proper .NET environment variable configuration:
+```json
+{
+  "ConnectionStrings": {
+    "Database": "Host=postgres;Port=5432;Database=mydb;Username=user;Password=pass;"
+  }
+}
+```
+
+## Why This Rule Exists
+1. **.NET Configuration System**: Does not natively support shell-style environment variable expansion
+2. **Runtime Errors**: Using shell syntax causes `FormatException` or `ArgumentException` at runtime
+3. **Type Safety**: Configuration values must be parseable to their expected types (int, bool, etc.)
+4. **Cross-Platform**: Shell syntax varies between operating systems
+
+## Implementation Guidelines
+- **For Docker Deployments**: Use direct values in production configuration and set environment variables in docker-compose.yml
+- **For Development**: Use separate appsettings.Development.json with appropriate values
+- **For Environment-Specific Values**: Use .NET's built-in environment variable configuration providers
+- **For Secrets**: Use .NET's Secret Manager for development and proper secret management in production
+
+## Validation Checklist
+- [ ] No `${VAR}` or `${VAR:-default}` syntax in any appsettings.json files
+- [ ] All connection strings use direct values or proper .NET environment variable configuration
+- [ ] Environment variables are properly set in deployment environment (Docker, Kubernetes, etc.)
+- [ ] Configuration values are testable and parseable to their expected types

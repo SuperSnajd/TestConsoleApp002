@@ -1,0 +1,46 @@
+---
+description: "Search result processing and analysis protocols"
+alwaysApply: true
+---
+
+# Search Result Processing Rules
+
+## Critical Search Behavior Standards
+- **ALWAYS analyze search results FIRST** before concluding information is missing
+- **READ and INTERPRET all search results** before performing additional searches
+- **PRESENT found information IMMEDIATELY** when search results contain relevant data
+- **AVOID tunnel vision** - don't assume specific file formats when information exists in other forms
+
+## MANDATORY STOP-AND-VALIDATE PROTOCOL
+- **STOP IMMEDIATELY** when search results contain the requested information
+- **VALIDATE FINDINGS** against the user's actual question before suggesting additional steps
+- **NEVER suggest complex solutions** when simple answers exist in search results
+- **QUOTE the specific line/section** that answers the user's question
+
+## Search Result Analysis Protocol
+1. **Examine ALL search results** returned by codebase_search, grep, or file_search tools
+2. **Extract relevant information** from results before declaring "not found"
+3. **Present findings** to user immediately when information is located
+4. **Only perform additional searches** if initial results genuinely lack the requested information
+5. **Trust search tools** - they often find information in unexpected locations or formats
+
+## Evidence-Based Response Protocol
+1. **QUOTE the evidence** from search results that answers the user's question
+2. **EXPLAIN why this evidence is sufficient** to answer the question
+3. **ONLY suggest additional steps** if the evidence is genuinely incomplete
+4. **NEVER ignore clear documentation** in favor of external research
+
+## Common Search Mistakes to Avoid
+- ❌ **Ignoring search results** that contain the requested information
+- ❌ **Assuming specific file formats** (e.g., looking only for .json when info is in .md)
+- ❌ **Continuing to search** after finding relevant information
+- ❌ **Not reading search result content** thoroughly before concluding failure
+- ❌ **Dismissing results** because they're in documentation rather than configuration files
+
+## Validation Checklist - MANDATORY BEFORE RESPONDING
+- [ ] Did I find the answer in the search results?
+- [ ] Did I quote the specific evidence that answers the question?
+- [ ] Did I check if the user's question is already answered by existing configuration?
+- [ ] Did I avoid suggesting unnecessary additional steps?
+- [ ] Did I trust the project's own documentation over external sources?
+- [ ] Would my response pass the "simple answer first" test?

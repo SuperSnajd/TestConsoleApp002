@@ -1,0 +1,93 @@
+# .NET
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+*.cache
+*.svclog
+*.vssscc
+*.vspscc
+*.dbmdl
+**/*.dbmdl
+*.opendb
+*.ldf
+*.mdf
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+*.vsp
+*.vspx
+*.psess
+*.pidb
+*.pdb
+_ReSharper*/
+*.DotSettings.user
+.stylecop/
+StyleCop.Cache
+packages/
+*.nupkg
+*.snupkg
+.nuget/
+.idea/
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Env files (keep example)
+.env
+.env.*
+!.env.example
+
+# Logs and temp
+*.log
+logs/
+tmp/
+temp/
+.cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors/IDE
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.idea/
+*.iml
+
+# Seq logging data - comprehensive patterns
+docker/seq/data/Stream/
+docker/seq/data/Backups/
+docker/seq/data/Documents/
+docker/seq/data/Logs/
+*.tick
+*.seqbac
+*.index
+*.span
+*.docc
+*.flare
+*.metadata
+
+# My inserts
+*.junk
+
+# Docker build context files
+**/Dockerfile.dockerignore
+
+# ASP.NET Core launch settings (contains local dev URLs/ports)
+**/Properties/launchSettings.json
+
+# Environment-specific Dockerfiles (keep main Dockerfile if it's generic)
+# Uncomment the line below if your Dockerfile contains environment-specific settings
+# **/Dockerfile

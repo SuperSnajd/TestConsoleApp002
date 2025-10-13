@@ -1,0 +1,40 @@
+---
+description: "Main AI agent rules overview for .NET development with Test Log Processing"
+alwaysApply: true
+---
+
+# AI Agent Rules Overview
+
+This project uses specialized rule files for different aspects of development. Each rule file is focused on a specific domain to provide clear, maintainable guidance.
+
+# When user asks to scaffold or extend a .NET console app:
+- Always propose a PLAN before writing code.
+- Plans must include: solution layout, file paths, NuGet packages, CLI flags, test plan, coverage gate, CI workflow.
+- Each step should show either: exact shell commands OR a unified diff for each file.
+
+## Rule File Structure
+
+### Core Development Rules
+- **dotnet-development.mdc**: General .NET coding standards, conventions, and best practices
+- **configuration-management.mdc**: Configuration and environment management rules
+
+### Process and Integration Rules  
+- **workflow-standards.mdc**: Git workflow, task completion, and build verification standards
+- **mcp-integration.mdc**: MCP server configuration and usage guidelines
+- **search-behavior.mdc**: Search result processing and analysis protocols
+
+## Core Principles
+- Follow .NET best practices and conventions
+- Use event sourcing with Marten for test log processing
+- Implement comprehensive testing strategies
+- Maintain clean, maintainable code architecture
+- Use task-based development with proper Git workflow
+- Trust project-specific configuration over generic solutions
+
+## Quick Reference
+- **Build Verification**: Always run `dotnet build` before merging
+- **Search Results**: Always analyze search results before concluding information is missing
+- **MCP Tools**: Prefer MCP tools over manual instructions when available
+
+For detailed rules in each domain, refer to the specific rule files listed above.
+

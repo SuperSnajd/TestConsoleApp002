@@ -1,0 +1,35 @@
+---
+description: "Git workflow and task completion standards"
+alwaysApply: true
+---
+
+# Complete Task Execution Workflow
+
+## Git Workflow - Task-Based Implementation
+1. **Create Feature Branch**: `git checkout -b feature/task-X.Y-description` (from ImplementationPlan.md)
+2. **Implement Requirements**: Complete all task specifications
+3. **Commit Changes**: Use descriptive commit messages during development
+4. **Verify Build**: Execute `dotnet build` to ensure compilation succeeds (run `dotnet test` when tests exist)
+5. **Update Documentation**: Mark task complete in ImplementationPlan.md (status, progress %, phase)
+6. **Merge to Main**: `git checkout main && git merge feature/task-X.Y-description`
+7. **Clean Up**: `git branch -d feature/task-X.Y-description`
+
+## Testing Standards - MANDATORY REQUIREMENTS
+- **All code must compile without errors** before any merge
+- **All tests must pass** when tests are implemented (currently in planning phase)
+- **Build verification**: Always run `dotnet build` to verify compilation
+- **Test when available**: Run `dotnet test` when test projects exist
+- **Never rely on planning documents** - always verify with actual build/test runs
+
+## Task Completion Standards
+- **Implementation alone is NOT sufficient** - Git workflow, build verification, and documentation are REQUIRED
+- **ImplementationPlan.md Updates MANDATORY**: Change `- [ ]` to `- [x]`, update progress %, update phase
+- **Build verification**: Every task must compile successfully with `dotnet build`
+- **Transparency Required**: Report any failures immediately, never silently ignore steps
+- **Ask for guidance** if unable to complete any step - never proceed without explicit user guidance when blocked
+
+## Rule Management
+- **Add New Rules When:** New technology/pattern is used in 3+ files, common bugs could be prevented, or code reviews repeatedly mention the same feedback
+- **Modify Existing Rules When:** Better examples exist, additional edge cases are discovered, or implementation details have changed
+- **Rule Quality Standards:** Rules should be actionable, specific, with up-to-date examples from actual code
+- **Maintenance:** Monitor code review comments, update after major refactors, deprecate outdated patterns, and keep documentation synchronized

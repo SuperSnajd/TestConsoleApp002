@@ -1,0 +1,38 @@
+---
+description: "MCP server integration and configuration rules"
+alwaysApply: true
+---
+
+# MCP Server Integration Rules
+
+## Available Server Capabilities
+- **Filesystem**: Available - Use for file operations (read, write, edit, search, list directories)
+- **Sequential Thinking**: Available - Apply structured reasoning for complex problem decomposition
+- **Context7**: Available - Access enhanced context for technology research and library documentation  
+- **Fetch**: Available - Retrieve web content and external resources for up-to-date information
+- **GitHub**: Available - Access repository information, commit history, pull requests, and GitHub API operations
+
+## MCP Server Guidelines
+- **Prefer MCP tools** over manual instructions when available
+- **Combine multiple servers** for comprehensive solutions
+- **Integrate outputs** directly into development workflows
+
+## MCP Server Status Validation - CRITICAL RULE
+- **TRUST the Agents.mdc configuration** - if a server is listed as "Available", it IS available
+- **NEVER suggest additional MCP setup** when servers are already listed as available
+- **QUOTE the specific line** from Agents.mdc that confirms availability
+- **DO NOT research external setup procedures** for already-configured servers
+
+## Configuration Trust Rules
+
+### Project Documentation Authority
+- **Agents.mdc is authoritative** for MCP server availability and configuration
+- **NEVER contradict** what Agents.mdc states about available tools
+- **TRUST project-specific configuration** over generic setup instructions
+- **ASK for clarification** rather than assuming configuration is incomplete
+
+### When NOT to Suggest Additional Setup
+- ❌ When MCP servers are listed as "Available" in Agents.mdc
+- ❌ When configuration files already exist and contain the requested information
+- ❌ When the user's question can be answered from existing project documentation
+- ❌ When simple answers exist but you're tempted to provide complex alternatives

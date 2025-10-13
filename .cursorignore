@@ -1,0 +1,76 @@
+# Dependencies
+node_modules/
+bower_components/
+vendor/
+.pnpm-store/
+.yarn/
+.yarn/cache/
+
+# Build outputs / artifacts
+dist/
+build/
+out/
+target/
+bin/
+obj/
+lib/
+public/build/
+.temp/
+.tmp/
+
+# .NET specific build/debug directories
+Debug/
+Release/
+x64/
+x86/
+Any CPU/
+
+# Framework caches/outputs
+.next/
+.next/cache/
+.nuxt/
+.svelte-kit/
+.angular/
+.storybook-out/
+storybook-static/
+.cache/
+.parcel-cache/
+.hugo_cache/
+
+# Coverage
+coverage/
+.coverage
+coverage.*
+.nyc_output/
+
+# Env files (keep example)
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# Editor/IDE
+.vscode/
+.idea/
+*.iml
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Binaries and archives (comment out if needed)
+*.exe
+*.dll
+*.so
+*.dylib
+*.class
+*.zip
+*.tar
+*.tar.gz
+*.7z
+*.rar
