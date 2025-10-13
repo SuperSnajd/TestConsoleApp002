@@ -15,7 +15,7 @@
 - [x] Tasks
   - [x] Initialize repo: `git init`, set default branch `main`
   - [x] Add `.gitignore` (for .NET) and commit
-  - [ ] Add remote (if applicable) and push initial commit
+  - [x] Add remote (if applicable) and push initial commit
 - [x] Acceptance criteria: repo initialized; `git status` clean; if solution exists, `dotnet build` has 0 errors
 - [x] Merge after completion: merge `chore/repo-setup` into `main` (PR), delete branch
 
