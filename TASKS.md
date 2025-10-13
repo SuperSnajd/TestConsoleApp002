@@ -10,13 +10,13 @@
 
 ## Phase 0 — Initialize Repository
 
-- [ ] Phase 0 complete
-- [ ] Create test branch before implementing: `chore/repo-setup` (from `main`)
-- [ ] Tasks
-  - [ ] Initialize repo: `git init`, set default branch `main`
-  - [ ] Add `.gitignore` (for .NET) and commit
+- [x] Phase 0 complete
+- [x] Create test branch before implementing: `chore/repo-setup` (from `main`)
+- [x] Tasks
+  - [x] Initialize repo: `git init`, set default branch `main`
+  - [x] Add `.gitignore` (for .NET) and commit
   - [ ] Add remote (if applicable) and push initial commit
-- [ ] Acceptance criteria: repo initialized; `git status` clean; if solution exists, `dotnet build` has 0 errors
+- [x] Acceptance criteria: repo initialized; `git status` clean; if solution exists, `dotnet build` has 0 errors
 - [ ] Merge after completion: merge `chore/repo-setup` into `main` (PR), delete branch
 
 ## Phase 1 — Project scaffolding
