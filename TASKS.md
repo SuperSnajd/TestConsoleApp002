@@ -17,7 +17,7 @@
   - [x] Add `.gitignore` (for .NET) and commit
   - [ ] Add remote (if applicable) and push initial commit
 - [x] Acceptance criteria: repo initialized; `git status` clean; if solution exists, `dotnet build` has 0 errors
-- [ ] Merge after completion: merge `chore/repo-setup` into `main` (PR), delete branch
+- [x] Merge after completion: merge `chore/repo-setup` into `main` (PR), delete branch
 
 ## Phase 1 — Project scaffolding
 
