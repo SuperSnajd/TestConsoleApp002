@@ -2,6 +2,7 @@ using Marten;
 using Marten.Schema;
 using Marten.Services;
 using FinalTestLogIngest.Options;
+using FinalTestLogIngest.Parsing.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 
@@ -19,15 +20,21 @@ public static class MartenConfig
             // Set schema name
             martenOptions.DatabaseSchemaName = options.Schema;
 
-            // Configure auto-create behavior based on environment
-            // Note: The AutoCreateSchemaObjects property will be configured when document models are added in Phase 3
-            // For now, keeping default behavior
-
-            // TODO: Add document mappings and indexes when models are created in Phase 3
-            // This configuration will be extended to include:
-            // - FinalTestLog document mapping
-            // - Index on DeviceSerial
-            // - Index on TimestampLocal
+            // Configure FinalTestLog document
+            martenOptions.Schema.For<FinalTestLog>()
+                .Identity(x => x.Id)
+                .Index(x => x.Identity.DeviceSerial, idx =>
+                {
+                    idx.Name = "idx_finaltestlog_deviceserial";
+                })
+                .Index(x => x.TimestampLocal, idx =>
+                {
+                    idx.Name = "idx_finaltestlog_timestamplocal";
+                })
+                .Index(x => x.ContentSha256, idx =>
+                {
+                    idx.Name = "idx_finaltestlog_contentsha256";
+                });
             
             // Configure for development - detailed logging
             if (options.AutoCreate == "All")

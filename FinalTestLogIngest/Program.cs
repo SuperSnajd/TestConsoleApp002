@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using FinalTestLogIngest.Options;
 using FinalTestLogIngest.Persistence;
+using FinalTestLogIngest.Persistence.Repositories;
 
 namespace FinalTestLogIngest;
 
@@ -44,6 +45,9 @@ public class Program
                 var databaseOptions = context.Configuration.GetSection("Database").Get<DatabaseOptions>()
                     ?? throw new InvalidOperationException("Database configuration is required");
                 services.AddMartenStore(databaseOptions);
+
+                // Register repositories
+                services.AddScoped<FinalTestLogRepository>();
 
                 // Background services will be registered here in later phases
             })
