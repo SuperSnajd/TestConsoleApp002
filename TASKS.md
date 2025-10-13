@@ -76,20 +76,20 @@
 
 ## Phase 5 — Ingestion pipeline
 
-- [ ] Phase 5 complete
-- [ ] Create test branch before implementing: `feature/phase-5-ingestion`
-- [ ] Tasks
-  - [ ] Use sequential thinking to design file watching, queueing, and debouncing strategies
-  - [ ] Create `Ingestion/FileQueue.cs` and `Ingestion/DebounceTracker.cs`
-  - [ ] Create `Ingestion/FileWatcherService.cs` (BackgroundService) using `FileSystemWatcher`
-  - [ ] Initial non-recursive scan for `*.log` on startup
-  - [ ] Filter Created/Changed/Renamed; enqueue files
-  - [ ] Debounce until size stable (`Processing.StableWaitMs`)
-  - [ ] Create `Ingestion/FileIngestor.cs` to orchestrate: read → parse → compute hash → persist → archive
-  - [ ] Build verification: run `dotnet build` to ensure no compilation errors
-  - [ ] If errors occur: use fetch and context7 tools to research and resolve build errors
-- [ ] Acceptance criteria: `dotnet build` completes with no errors; ingestion pipeline compiles and integrates with parser
-- [ ] Merge after completion: merge `feature/phase-5-ingestion` into `main`, delete branch
+- [x] Phase 5 complete
+- [x] Create test branch before implementing: `feature/phase-5-ingestion`
+- [x] Tasks
+  - [x] Use sequential thinking to design file watching, queueing, and debouncing strategies
+  - [x] Create `Ingestion/FileQueue.cs` and `Ingestion/DebounceTracker.cs`
+  - [x] Create `Ingestion/FileWatcherService.cs` (BackgroundService) using `FileSystemWatcher`
+  - [x] Initial non-recursive scan for `*.log` on startup
+  - [x] Filter Created/Changed/Renamed; enqueue files
+  - [x] Debounce until size stable (`Processing.StableWaitMs`)
+  - [x] Create `Ingestion/FileIngestor.cs` to orchestrate: read → parse → compute hash → persist → archive
+  - [x] Build verification: run `dotnet build` to ensure no compilation errors
+  - [x] If errors occur: use fetch and context7 tools to research and resolve build errors
+- [x] Acceptance criteria: `dotnet build` completes with no errors; ingestion pipeline compiles and integrates with parser
+- [x] Merge after completion: merge `feature/phase-5-ingestion` into `main`, delete branch
 
 ## Phase 6 — Persistence rules
 

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using FinalTestLogIngest.Options;
 using FinalTestLogIngest.Persistence;
 using FinalTestLogIngest.Persistence.Repositories;
+using FinalTestLogIngest.Ingestion;
 
 namespace FinalTestLogIngest;
 
@@ -49,7 +50,13 @@ public class Program
                 // Register repositories
                 services.AddScoped<FinalTestLogRepository>();
 
-                // Background services will be registered here in later phases
+                // Register ingestion pipeline components
+                services.AddSingleton<FileQueue>();
+                services.AddSingleton<DebounceTracker>();
+                services.AddScoped<FileIngestor>();
+
+                // Register background services
+                services.AddHostedService<FileWatcherService>();
             })
             .ConfigureLogging(logging =>
             {
