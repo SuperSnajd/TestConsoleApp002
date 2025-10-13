@@ -21,15 +21,15 @@
 
 ## Phase 1 — Project scaffolding
 
-- [ ] Phase 1 complete
-- [ ] Create test branch before implementing: `feature/phase-1-scaffolding`
-- [ ] Tasks
-  - [ ] Create/verify console host in `Program.cs` with `Host.CreateDefaultBuilder` and DI
-  - [ ] Add `appsettings.json`, `appsettings.Development.json`, `appsettings.Production.json`
-  - [ ] Add `Options/`: `WatcherOptions`, `ProcessingOptions`, `ArchiveOptions`, `DatabaseOptions`, `ParsingOptions`
-  - [ ] Bind options with validation in `Program.cs`
-- [ ] Acceptance criteria: `dotnet build` completes with no errors
-- [ ] Merge after completion: merge `feature/phase-1-scaffolding` into `main`, delete branch
+- [x] Phase 1 complete
+- [x] Create test branch before implementing: `feature/phase-1-scaffolding`
+- [x] Tasks
+  - [x] Create/verify console host in `Program.cs` with `Host.CreateDefaultBuilder` and DI
+  - [x] Add `appsettings.json`, `appsettings.Development.json`, `appsettings.Production.json`
+  - [x] Add `Options/`: `WatcherOptions`, `ProcessingOptions`, `ArchiveOptions`, `DatabaseOptions`, `ParsingOptions`
+  - [x] Bind options with validation in `Program.cs`
+- [x] Acceptance criteria: `dotnet build` completes with no errors
+- [x] Merge after completion: merge `feature/phase-1-scaffolding` into `main`, delete branch
 
 ## Phase 2 — Infrastructure: Postgres & Marten
 
