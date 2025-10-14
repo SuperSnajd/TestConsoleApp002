@@ -93,18 +93,18 @@
 
 ## Phase 6 — Persistence rules
 
-- [ ] Phase 6 complete
-- [ ] Create test branch before implementing: `feature/phase-6-persistence-rules`
-- [ ] Tasks
-  - [ ] Use sequential thinking to design deduplication and versioning logic
-  - [ ] Compute `ContentSha256` for raw text
-  - [ ] Dedupe: if existing doc has same hash, skip as duplicate
-  - [ ] Replacement: if same `Id` but different hash, update latest, increment `Version`, push prior to `ReplacedHistory`
-  - [ ] Ensure additional indexes exist; tune Marten session usage
-  - [ ] Build verification: run `dotnet build` to ensure no compilation errors
-  - [ ] If errors occur: use fetch and context7 tools to research and resolve build errors
-- [ ] Acceptance criteria: `dotnet build` completes with no errors; persistence rules compile and integrate with repository
-- [ ] Merge after completion: merge `feature/phase-6-persistence-rules` into `main`, delete branch
+- [x] Phase 6 complete
+- [x] Create test branch before implementing: `feature/phase-6-persistence-rules`
+- [x] Tasks
+  - [x] Use sequential thinking to design deduplication and versioning logic
+  - [x] Compute `ContentSha256` for raw text
+  - [x] Dedupe: if existing doc has same hash, skip as duplicate
+  - [x] Replacement: if same `Id` but different hash, update latest, increment `Version`, push prior to `ReplacedHistory`
+  - [x] Ensure additional indexes exist; tune Marten session usage
+  - [x] Build verification: run `dotnet build` to ensure no compilation errors
+  - [x] If errors occur: use fetch and context7 tools to research and resolve build errors
+- [x] Acceptance criteria: `dotnet build` completes with no errors; persistence rules compile and integrate with repository
+- [x] Merge after completion: merge `feature/phase-6-persistence-rules` into `main`, delete branch
 
 ## Phase 7 — Archiving & error handling
 

@@ -75,12 +75,30 @@ public class FileIngestor
             // Step 3: Compute ContentSha256 hash
             parsedLog.ContentSha256 = ComputeSha256Hash(rawText);
 
-            // Step 4: Persist to database (basic insert for Phase 5, deduplication in Phase 6)
-            await _repository.InsertAsync(parsedLog, cancellationToken);
+            // Step 4: Persist to database with deduplication and versioning
+            var persistenceResult = await _repository.UpsertWithVersioningAsync(parsedLog, cancellationToken);
 
-            _logger.LogInformation(
-                "Successfully processed file: {FilePath}, Id: {Id}, DeviceSerial: {DeviceSerial}",
-                filePath, parsedLog.Id, parsedLog.Identity.DeviceSerial);
+            // Log appropriate message based on persistence result
+            switch (persistenceResult)
+            {
+                case Persistence.Repositories.PersistenceResult.Inserted:
+                    _logger.LogInformation(
+                        "Inserted new document: {FilePath}, Id: {Id}, DeviceSerial: {DeviceSerial}, Version: {Version}",
+                        filePath, parsedLog.Id, parsedLog.Identity.DeviceSerial, parsedLog.Version);
+                    break;
+
+                case Persistence.Repositories.PersistenceResult.Updated:
+                    _logger.LogInformation(
+                        "Updated existing document: {FilePath}, Id: {Id}, DeviceSerial: {DeviceSerial}, Version: {Version} (replaced version {PreviousVersion})",
+                        filePath, parsedLog.Id, parsedLog.Identity.DeviceSerial, parsedLog.Version, parsedLog.Version - 1);
+                    break;
+
+                case Persistence.Repositories.PersistenceResult.Duplicate:
+                    _logger.LogInformation(
+                        "Skipped duplicate document: {FilePath}, Id: {Id}, DeviceSerial: {DeviceSerial}, ContentSha256: {ContentSha256}",
+                        filePath, parsedLog.Id, parsedLog.Identity.DeviceSerial, parsedLog.ContentSha256);
+                    break;
+            }
 
             // Step 5: Archive will be implemented in Phase 7
             // For now, just log success
