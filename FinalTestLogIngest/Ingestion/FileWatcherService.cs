@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 using FinalTestLogIngest.Options;
+using FinalTestLogIngest.Logging;
 
 namespace FinalTestLogIngest.Ingestion;
 
@@ -17,6 +18,7 @@ public class FileWatcherService : BackgroundService
     private readonly IServiceProvider _serviceProvider;
     private readonly FileQueue _fileQueue;
     private readonly DebounceTracker _debounceTracker;
+    private readonly IngestionMetrics _metrics;
     private readonly WatcherOptions _watcherOptions;
     private readonly ProcessingOptions _processingOptions;
     private FileSystemWatcher? _fileSystemWatcher;
@@ -26,6 +28,7 @@ public class FileWatcherService : BackgroundService
         IServiceProvider serviceProvider,
         FileQueue fileQueue,
         DebounceTracker debounceTracker,
+        IngestionMetrics metrics,
         IOptions<WatcherOptions> watcherOptions,
         IOptions<ProcessingOptions> processingOptions)
     {
@@ -33,20 +36,24 @@ public class FileWatcherService : BackgroundService
         _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         _fileQueue = fileQueue ?? throw new ArgumentNullException(nameof(fileQueue));
         _debounceTracker = debounceTracker ?? throw new ArgumentNullException(nameof(debounceTracker));
+        _metrics = metrics ?? throw new ArgumentNullException(nameof(metrics));
         _watcherOptions = watcherOptions?.Value ?? throw new ArgumentNullException(nameof(watcherOptions));
         _processingOptions = processingOptions?.Value ?? throw new ArgumentNullException(nameof(processingOptions));
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("FileWatcherService starting...");
+        _logger.LogInformation(LogEvents.ServiceStarted, 
+            "FileWatcherService starting. WatchPath: {WatchPath}, Filter: {Filter}, InitialScan: {InitialScan}",
+            _watcherOptions.Path, _watcherOptions.Filter, _watcherOptions.InitialScan);
 
         try
         {
             // Ensure watch directory exists
             if (!Directory.Exists(_watcherOptions.Path))
             {
-                _logger.LogError("Watch directory does not exist: {Path}", _watcherOptions.Path);
+                _logger.LogError(LogEvents.ServiceFatalError, 
+                    "Watch directory does not exist: {Path}", _watcherOptions.Path);
                 return;
             }
 
@@ -64,17 +71,20 @@ public class FileWatcherService : BackgroundService
         }
         catch (OperationCanceledException)
         {
-            _logger.LogInformation("FileWatcherService stopping due to cancellation");
+            _logger.LogInformation(LogEvents.ServiceStopping, 
+                "FileWatcherService stopping due to cancellation");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Fatal error in FileWatcherService");
+            _logger.LogError(LogEvents.ServiceFatalError, ex, 
+                "Fatal error in FileWatcherService");
             throw;
         }
         finally
         {
             _fileSystemWatcher?.Dispose();
-            _logger.LogInformation("FileWatcherService stopped");
+            _logger.LogInformation(LogEvents.ServiceStopped, 
+                "FileWatcherService stopped. Metrics: {Metrics}", _metrics.GetSummary());
         }
     }
 
@@ -83,7 +93,8 @@ public class FileWatcherService : BackgroundService
     /// </summary>
     private void PerformInitialScan()
     {
-        _logger.LogInformation("Performing initial scan of directory: {Path}", _watcherOptions.Path);
+        _logger.LogInformation(LogEvents.InitialScanStarted, 
+            "Performing initial scan of directory: {Path}", _watcherOptions.Path);
 
         try
         {
@@ -96,14 +107,17 @@ public class FileWatcherService : BackgroundService
             foreach (var file in files)
             {
                 _fileQueue.Enqueue(file);
-                _logger.LogDebug("Queued existing file: {FilePath}", file);
+                _metrics.IncrementQueued();
+                _logger.LogDebug(LogEvents.FileQueued, "Queued existing file: {FilePath}", file);
             }
 
-            _logger.LogInformation("Initial scan complete. Found {Count} file(s)", files.Length);
+            _logger.LogInformation(LogEvents.InitialScanCompleted, 
+                "Initial scan complete. Found {Count} file(s)", files.Length);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error during initial scan of directory: {Path}", _watcherOptions.Path);
+            _logger.LogError(LogEvents.InitialScanError, ex, 
+                "Error during initial scan of directory: {Path}", _watcherOptions.Path);
         }
     }
 
@@ -127,7 +141,7 @@ public class FileWatcherService : BackgroundService
         // Start monitoring
         _fileSystemWatcher.EnableRaisingEvents = true;
 
-        _logger.LogInformation(
+        _logger.LogInformation(LogEvents.FileSystemWatcherStarted,
             "FileSystemWatcher started for path: {Path}, filter: {Filter}, includeSubdirectories: {IncludeSubdirectories}",
             _watcherOptions.Path,
             _watcherOptions.Filter,
@@ -141,8 +155,10 @@ public class FileWatcherService : BackgroundService
     {
         if (e.ChangeType == WatcherChangeTypes.Created || e.ChangeType == WatcherChangeTypes.Changed)
         {
-            _logger.LogDebug("File event detected: {ChangeType} - {FilePath}", e.ChangeType, e.FullPath);
+            _logger.LogDebug(LogEvents.FileQueued, 
+                "File event detected: {ChangeType} - {FilePath}", e.ChangeType, e.FullPath);
             _fileQueue.Enqueue(e.FullPath);
+            _metrics.IncrementQueued();
         }
     }
 
@@ -151,8 +167,10 @@ public class FileWatcherService : BackgroundService
     /// </summary>
     private void OnFileRenamed(object sender, RenamedEventArgs e)
     {
-        _logger.LogDebug("File renamed: {OldPath} -> {NewPath}", e.OldFullPath, e.FullPath);
+        _logger.LogDebug(LogEvents.FileQueued, 
+            "File renamed: {OldPath} -> {NewPath}", e.OldFullPath, e.FullPath);
         _fileQueue.Enqueue(e.FullPath);
+        _metrics.IncrementQueued();
     }
 
     /// <summary>
@@ -183,7 +201,8 @@ public class FileWatcherService : BackgroundService
                 // Check if file still exists
                 if (!File.Exists(filePath))
                 {
-                    _logger.LogDebug("File no longer exists, skipping: {FilePath}", filePath);
+                    _logger.LogDebug(LogEvents.FileNoLongerExists, 
+                        "File no longer exists, skipping: {FilePath}", filePath);
                     _debounceTracker.RemoveFile(filePath);
                     continue;
                 }
@@ -200,7 +219,8 @@ public class FileWatcherService : BackgroundService
                 }
 
                 // File is stable, process it
-                _logger.LogInformation("File is stable, processing: {FilePath}", filePath);
+                _logger.LogInformation(LogEvents.FileStable, 
+                    "File is stable, processing: {FilePath}", filePath);
                 await ProcessStableFileAsync(filePath, stoppingToken);
 
                 // Remove from tracking after processing

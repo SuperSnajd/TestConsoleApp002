@@ -6,6 +6,7 @@ using FinalTestLogIngest.Options;
 using FinalTestLogIngest.Persistence;
 using FinalTestLogIngest.Persistence.Repositories;
 using FinalTestLogIngest.Ingestion;
+using FinalTestLogIngest.Logging;
 
 namespace FinalTestLogIngest;
 
@@ -53,6 +54,7 @@ public class Program
                 // Register ingestion pipeline components
                 services.AddSingleton<FileQueue>();
                 services.AddSingleton<DebounceTracker>();
+                services.AddSingleton<IngestionMetrics>();
                 services.AddScoped<FileIngestor>();
 
                 // Register background services
@@ -66,10 +68,40 @@ public class Program
             .Build();
 
         var logger = host.Services.GetRequiredService<ILogger<Program>>();
-        logger.LogInformation("FinalTest Log Ingest service starting...");
+        var config = host.Services.GetRequiredService<IConfiguration>();
+        var metrics = host.Services.GetRequiredService<IngestionMetrics>();
 
+        // Log application startup with configuration summary
+        logger.LogInformation(LogEvents.ApplicationStarting, 
+            "FinalTest Log Ingest service starting...");
+
+        var watcherSection = config.GetSection("Watcher");
+        var databaseSection = config.GetSection("Database");
+
+        logger.LogInformation(LogEvents.StartupSummary,
+            "Startup Configuration - Watch Path: {WatchPath}, Filter: {Filter}, " +
+            "Database: {DatabaseName}, Schema: {SchemaName}, Auto Create: {AutoCreate}",
+            watcherSection["Path"],
+            watcherSection["Filter"],
+            databaseSection["DatabaseName"],
+            databaseSection["SchemaName"],
+            databaseSection["AutoCreate"]);
+
+        logger.LogInformation(LogEvents.ApplicationStarted, 
+            "FinalTest Log Ingest service started successfully");
+
+        // Run the application
         await host.RunAsync();
 
-        logger.LogInformation("FinalTest Log Ingest service stopped.");
+        // Log application shutdown with metrics summary
+        logger.LogInformation(LogEvents.ApplicationStopping, 
+            "FinalTest Log Ingest service stopping...");
+
+        logger.LogInformation(LogEvents.ShutdownSummary,
+            "Shutdown Statistics - {Metrics}",
+            metrics.GetSummary());
+
+        logger.LogInformation(LogEvents.ApplicationStopped, 
+            "FinalTest Log Ingest service stopped");
     }
 }
