@@ -123,16 +123,16 @@
 
 ## Phase 8 — Logging & observability
 
-- [ ] Phase 8 complete
-- [ ] Create test branch before implementing: `feature/phase-8-logging`
-- [ ] Tasks
-  - [ ] Use sequential thinking to design comprehensive logging strategy with event IDs
-  - [ ] Structured logs with event IDs for: queued, stable, parsed, inserted, updated, archived, duplicate, error
-  - [ ] Startup/shutdown summaries; log counts
-  - [ ] Build verification: run `dotnet build` to ensure no compilation errors
-  - [ ] If errors occur: use fetch and context7 tools to research and resolve build errors
-- [ ] Acceptance criteria: `dotnet build` completes with no errors; logging infrastructure compiles and integrates across all services
-- [ ] Merge after completion: merge `feature/phase-8-logging` into `main`, delete branch
+- [x] Phase 8 complete
+- [x] Create test branch before implementing: `feature/phase-8-logging`
+- [x] Tasks
+  - [x] Use sequential thinking to design comprehensive logging strategy with event IDs
+  - [x] Structured logs with event IDs for: queued, stable, parsed, inserted, updated, archived, duplicate, error
+  - [x] Startup/shutdown summaries; log counts
+  - [x] Build verification: run `dotnet build` to ensure no compilation errors
+  - [x] If errors occur: use fetch and context7 tools to research and resolve build errors
+- [x] Acceptance criteria: `dotnet build` completes with no errors; logging infrastructure compiles and integrates across all services
+- [x] Merge after completion: merge `feature/phase-8-logging` into `main`, delete branch
 
 ## Phase 9 — Docs & runbook
 
