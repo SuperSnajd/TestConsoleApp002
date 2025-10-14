@@ -149,17 +149,17 @@
 
 ## Phase 10 — Manual verification
 
-- [ ] Phase 10 complete
-- [ ] Create test branch before implementing: `release/phase-10-verification`
-- [ ] Tasks
-  - [ ] Use sequential thinking to plan comprehensive end-to-end verification scenarios
-  - [ ] Start dev DB via `docker-compose.dev.yml`
-  - [ ] Run the app; drop sample `.log` files in the watch folder
-  - [ ] Verify documents in Postgres via Marten/pgAdmin; confirm archive/error moves
-  - [ ] Build verification: run `dotnet build` to ensure final build completes with no errors
-  - [ ] If errors occur: use fetch and context7 tools to research and resolve build errors
-- [ ] Acceptance criteria: `dotnet build` completes with no errors; all verification steps executed successfully
-- [ ] Merge after completion: merge `release/phase-10-verification` into `main`; tag release if desired
+- [x] Phase 10 complete
+- [x] Create test branch before implementing: `release/phase-10-verification`
+- [x] Tasks
+  - [x] Use sequential thinking to plan comprehensive end-to-end verification scenarios
+  - [x] Start dev DB via `docker-compose.dev.yml`
+  - [x] Run the app; drop sample `.log` files in the watch folder
+  - [x] Verify documents in Postgres via Marten/pgAdmin; confirm archive/error moves
+  - [x] Build verification: run `dotnet build` to ensure final build completes with no errors
+  - [x] If errors occur: use fetch and context7 tools to research and resolve build errors
+- [x] Acceptance criteria: `dotnet build` completes with no errors; all verification steps executed successfully
+- [x] Merge after completion: merge `release/phase-10-verification` into `main`; tag release if desired
 
 ### Minimal file map (key files)
 
