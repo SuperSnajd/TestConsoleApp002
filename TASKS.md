@@ -136,16 +136,16 @@
 
 ## Phase 9 — Docs & runbook
 
-- [ ] Phase 9 complete
-- [ ] Create test branch before implementing: `docs/phase-9-readme`
-- [ ] Tasks
-  - [ ] Use sequential thinking to organize documentation structure and content flow
-  - [ ] Write `README.md` with prerequisites, compose up/down, config keys, how to run, layout, troubleshooting
-  - [ ] Add notes on production overrides (DB 5432, database name, credentials)
-  - [ ] Build verification: run `dotnet build` to ensure project still compiles with no errors
-  - [ ] If errors occur: use fetch and context7 tools to research and resolve build errors
-- [ ] Acceptance criteria: `dotnet build` completes with no errors; comprehensive documentation added
-- [ ] Merge after completion: merge `docs/phase-9-readme` into `main`, delete branch
+- [x] Phase 9 complete
+- [x] Create test branch before implementing: `docs/phase-9-readme`
+- [x] Tasks
+  - [x] Use sequential thinking to organize documentation structure and content flow
+  - [x] Write `README.md` with prerequisites, compose up/down, config keys, how to run, layout, troubleshooting
+  - [x] Add notes on production overrides (DB 5432, database name, credentials)
+  - [x] Build verification: run `dotnet build` to ensure project still compiles with no errors
+  - [x] If errors occur: use fetch and context7 tools to research and resolve build errors
+- [x] Acceptance criteria: `dotnet build` completes with no errors; comprehensive documentation added
+- [x] Merge after completion: merge `docs/phase-9-readme` into `main`, delete branch
 
 ## Phase 10 — Manual verification
 
