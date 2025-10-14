@@ -17,15 +17,18 @@ public class FileIngestor
     private readonly ILogger<FileIngestor> _logger;
     private readonly FinalTestLogRepository _repository;
     private readonly ArchiveOptions _archiveOptions;
+    private readonly WatcherOptions _watcherOptions;
 
     public FileIngestor(
         ILogger<FileIngestor> logger,
         FinalTestLogRepository repository,
-        IOptions<ArchiveOptions> archiveOptions)
+        IOptions<ArchiveOptions> archiveOptions,
+        IOptions<WatcherOptions> watcherOptions)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _archiveOptions = archiveOptions?.Value ?? throw new ArgumentNullException(nameof(archiveOptions));
+        _watcherOptions = watcherOptions?.Value ?? throw new ArgumentNullException(nameof(watcherOptions));
     }
 
     /// <summary>
@@ -100,18 +103,20 @@ public class FileIngestor
                     break;
             }
 
-            // Step 5: Archive will be implemented in Phase 7
-            // For now, just log success
+            // Step 5: Archive file on success
+            ArchiveFile(filePath, isSuccess: true);
             return true;
         }
         catch (ArgumentException ex)
         {
             _logger.LogError(ex, "Parse error for file: {FilePath} - {Message}", filePath, ex.Message);
+            ArchiveFile(filePath, isSuccess: false);
             return false;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unexpected error processing file: {FilePath}", filePath);
+            ArchiveFile(filePath, isSuccess: false);
             return false;
         }
     }
@@ -143,6 +148,103 @@ public class FileIngestor
         }
 
         throw new IOException($"Failed to read file after {maxRetries} attempts: {filePath}");
+    }
+
+    /// <summary>
+    /// Archives a file to the appropriate folder based on processing result.
+    /// </summary>
+    /// <param name="sourcePath">The full path to the file to archive.</param>
+    /// <param name="isSuccess">True if processing succeeded, false for errors.</param>
+    private void ArchiveFile(string sourcePath, bool isSuccess)
+    {
+        try
+        {
+            if (!File.Exists(sourcePath))
+            {
+                _logger.LogWarning("Cannot archive file - file does not exist: {FilePath}", sourcePath);
+                return;
+            }
+
+            // Determine target base folder
+            var targetBaseFolder = isSuccess ? _archiveOptions.SuccessPath : _archiveOptions.ErrorPath;
+            var operation = isSuccess ? _archiveOptions.OnSuccess : _archiveOptions.OnError;
+
+            if (string.IsNullOrWhiteSpace(targetBaseFolder))
+            {
+                _logger.LogWarning("Archive path not configured for {Result}, skipping archive: {FilePath}",
+                    isSuccess ? "success" : "error", sourcePath);
+                return;
+            }
+
+            // Calculate target path
+            string targetPath;
+            if (_archiveOptions.PreserveSubfolders)
+            {
+                // Preserve subfolder structure relative to watch folder
+                var relativePath = Path.GetRelativePath(_watcherOptions.Path, sourcePath);
+                targetPath = Path.Combine(targetBaseFolder, relativePath);
+            }
+            else
+            {
+                // Just use filename
+                var fileName = Path.GetFileName(sourcePath);
+                targetPath = Path.Combine(targetBaseFolder, fileName);
+            }
+
+            // Ensure target directory exists
+            var targetDirectory = Path.GetDirectoryName(targetPath);
+            if (!string.IsNullOrEmpty(targetDirectory))
+            {
+                Directory.CreateDirectory(targetDirectory);
+            }
+
+            // Handle filename conflicts with timestamped naming
+            if (File.Exists(targetPath))
+            {
+                targetPath = GenerateTimestampedPath(targetPath);
+            }
+
+            // Perform the archive operation
+            if (string.Equals(operation, "Move", StringComparison.OrdinalIgnoreCase))
+            {
+                File.Move(sourcePath, targetPath);
+                _logger.LogInformation("Archived (moved) {Result} file: {SourcePath} → {TargetPath}",
+                    isSuccess ? "success" : "error", sourcePath, targetPath);
+            }
+            else if (string.Equals(operation, "Copy", StringComparison.OrdinalIgnoreCase))
+            {
+                File.Copy(sourcePath, targetPath, overwrite: false);
+                _logger.LogInformation("Archived (copied) {Result} file: {SourcePath} → {TargetPath}",
+                    isSuccess ? "success" : "error", sourcePath, targetPath);
+            }
+            else
+            {
+                _logger.LogWarning("Unknown archive operation '{Operation}', skipping archive: {FilePath}",
+                    operation, sourcePath);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to archive file: {FilePath}", sourcePath);
+            // Don't throw - archive failure should not prevent ingestion success
+        }
+    }
+
+    /// <summary>
+    /// Generates a timestamped filename to avoid conflicts.
+    /// Pattern: {name}-{yyyyMMdd_HHmmss}{ext}
+    /// </summary>
+    /// <param name="originalPath">The original target path with conflict.</param>
+    /// <returns>A new path with timestamp inserted before the extension.</returns>
+    private string GenerateTimestampedPath(string originalPath)
+    {
+        var directory = Path.GetDirectoryName(originalPath) ?? string.Empty;
+        var fileNameWithoutExt = Path.GetFileNameWithoutExtension(originalPath);
+        var extension = Path.GetExtension(originalPath);
+        var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+
+        var newFileName = $"{fileNameWithoutExt}-{timestamp}{extension}";
+        return Path.Combine(directory, newFileName);
     }
 
     /// <summary>

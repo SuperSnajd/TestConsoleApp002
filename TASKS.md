@@ -108,18 +108,18 @@
 
 ## Phase 7 — Archiving & error handling
 
-- [ ] Phase 7 complete
-- [ ] Create test branch before implementing: `feature/phase-7-archiving-errors`
-- [ ] Tasks
-  - [ ] Use sequential thinking to design file archiving strategies and error recovery patterns
-  - [ ] On success: move to `Archive.SuccessPath` using `{name}-{yyyyMMdd_HHmmss}{ext}`
-  - [ ] On parse/persist error: move to `Archive/ErrorPath`
-  - [ ] Respect `Archive.PreserveSubfolders`
-  - [ ] Use shared read file IO and careful exception handling
-  - [ ] Build verification: run `dotnet build` to ensure no compilation errors
-  - [ ] If errors occur: use fetch and context7 tools to research and resolve build errors
-- [ ] Acceptance criteria: `dotnet build` completes with no errors; archiving logic compiles and integrates with ingestor
-- [ ] Merge after completion: merge `feature/phase-7-archiving-errors` into `main`, delete branch
+- [x] Phase 7 complete
+- [x] Create test branch before implementing: `feature/phase-7-archiving-errors`
+- [x] Tasks
+  - [x] Use sequential thinking to design file archiving strategies and error recovery patterns
+  - [x] On success: move to `Archive.SuccessPath` using `{name}-{yyyyMMdd_HHmmss}{ext}`
+  - [x] On parse/persist error: move to `Archive/ErrorPath`
+  - [x] Respect `Archive.PreserveSubfolders`
+  - [x] Use shared read file IO and careful exception handling
+  - [x] Build verification: run `dotnet build` to ensure no compilation errors
+  - [x] If errors occur: use fetch and context7 tools to research and resolve build errors
+- [x] Acceptance criteria: `dotnet build` completes with no errors; archiving logic compiles and integrates with ingestor
+- [x] Merge after completion: merge `feature/phase-7-archiving-errors` into `main`, delete branch
 
 ## Phase 8 — Logging & observability
 
