@@ -1,0 +1,19 @@
+{
+  "profiles": {
+    "FinalTestLogIngest": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    },
+    "FinalTestLogIngest (Production)": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Production"
+      }
+    }
+  }
+}
+

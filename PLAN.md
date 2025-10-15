@@ -31,7 +31,7 @@
 ```json
 {
   "Watcher": {
-    "Path": "C:/data/incoming",
+    "Path": "C:/cursor/data/incoming",
     "Filter": "*.log",
     "IncludeSubdirectories": false,
     "NotifyFilters": ["FileName", "LastWrite"],
@@ -42,8 +42,8 @@
     "MaxConcurrency": 2
   },
   "Archive": {
-    "SuccessPath": "C:/data/archive",
-    "ErrorPath": "C:/data/error",
+    "SuccessPath": "C:/cursor/data/archive",
+    "ErrorPath": "C:/cursor/data/error",
     "OnSuccess": "Move",
     "OnError": "Move",
     "ArchiveNamePatternOnConflict": "{name}-{yyyyMMdd_HHmmss}{ext}",

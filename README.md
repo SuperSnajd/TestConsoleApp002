@@ -64,26 +64,30 @@ docker ps
 
 ### 3. Configure Watch Directories
 
-Edit `appsettings.Development.json` or use the default paths:
+The default development configuration uses `C:/cursor/data` as the base path:
 
-- **Watch Path**: `C:/data/incoming` (create this directory)
-- **Archive Path**: `C:/data/archive` (will be created automatically)
-- **Error Path**: `C:/data/error` (will be created automatically)
+- **Watch Path**: `C:/cursor/data/incoming` (create this directory)
+- **Archive Path**: `C:/cursor/data/archive` (will be created automatically)
+- **Error Path**: `C:/cursor/data/error` (will be created automatically)
 
 ```bash
 # Windows
-mkdir C:\data\incoming
-mkdir C:\data\archive
-mkdir C:\data\error
+mkdir C:\cursor\data\incoming
+mkdir C:\cursor\data\archive
+mkdir C:\cursor\data\error
 
 # Linux/Mac
-mkdir -p /data/incoming /data/archive /data/error
+mkdir -p /cursor/data/incoming /cursor/data/archive /cursor/data/error
 ```
 
 ### 4. Run the Application
 
 ```bash
 # Development mode (uses appsettings.Development.json)
+# The launchSettings.json automatically sets DOTNET_ENVIRONMENT=Development
+dotnet run --project FinalTestLogIngest
+
+# Alternatively, you can explicitly set the environment:
 dotnet run --project FinalTestLogIngest --environment Development
 
 # Production mode (uses appsettings.Production.json)
@@ -96,10 +100,10 @@ Drop a test log file into the watch directory:
 
 ```bash
 # Copy the example file
-copy "Example file\Example testlog file.txt" C:\data\incoming\test.log
+copy "Example file\Example testlog file.txt" C:\cursor\data\incoming\test.log
 
 # Or on Linux/Mac
-cp "Example file/Example testlog file.txt" /data/incoming/test.log
+cp "Example file/Example testlog file.txt" /cursor/data/incoming/test.log
 ```
 
 Watch the console output for processing logs.
@@ -117,7 +121,7 @@ Configures the file system watcher:
 ```json
 {
   "Watcher": {
-    "Path": "C:/data/incoming",
+    "Path": "C:/cursor/data/incoming",
     "Filter": "*.log",
     "IncludeSubdirectories": false,
     "NotifyFilters": ["FileName", "LastWrite"],
@@ -126,7 +130,7 @@ Configures the file system watcher:
 }
 ```
 
-- **Path**: Directory to monitor for log files
+- **Path**: Directory to monitor for log files (Development: `C:/cursor/data/incoming`, Production: `C:/data/incoming`)
 - **Filter**: File pattern to watch (default: `*.log`)
 - **IncludeSubdirectories**: Whether to watch subdirectories (default: false)
 - **NotifyFilters**: File system changes to monitor
@@ -155,8 +159,8 @@ Configures file archiving after processing:
 ```json
 {
   "Archive": {
-    "SuccessPath": "C:/data/archive",
-    "ErrorPath": "C:/data/error",
+    "SuccessPath": "C:/cursor/data/archive",
+    "ErrorPath": "C:/cursor/data/error",
     "OnSuccess": "Move",
     "OnError": "Move",
     "ArchiveNamePatternOnConflict": "{name}-{yyyyMMdd_HHmmss}{ext}",
@@ -165,8 +169,8 @@ Configures file archiving after processing:
 }
 ```
 
-- **SuccessPath**: Destination for successfully processed files
-- **ErrorPath**: Destination for files that failed processing
+- **SuccessPath**: Destination for successfully processed files (Development: `C:/cursor/data/archive`, Production: `C:/data/archive`)
+- **ErrorPath**: Destination for files that failed processing (Development: `C:/cursor/data/error`, Production: `C:/data/error`)
 - **OnSuccess/OnError**: Action to take (`Move` or `Copy`)
 - **ArchiveNamePatternOnConflict**: Pattern for renaming conflicting files
 - **PreserveSubfolders**: Maintain subdirectory structure in archive
@@ -213,12 +217,13 @@ Controls log file parsing behavior:
 - Database on port **5434**
 - Debug logging enabled
 - AutoCreate set to `All`
+- Paths use `C:/cursor/data` base directory
 
 **Production** (`appsettings.Production.json`):
 - Database on port **5432**
 - Information logging only
 - AutoCreate set to `CreateOrUpdate`
-- Update paths for production environment
+- Paths use `C:/data` base directory
 
 ## Project Structure
 
@@ -229,6 +234,8 @@ FinalTestLogIngest/
 ├── appsettings.Development.json        # Development overrides
 ├── appsettings.Production.json         # Production overrides
 ├── FinalTestLogIngest.csproj          # Project file
+├── Properties/
+│   └── launchSettings.json            # Development environment configuration
 ├── Options/                            # Configuration option classes
 │   ├── WatcherOptions.cs
 │   ├── ProcessingOptions.cs

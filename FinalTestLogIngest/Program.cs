@@ -70,10 +70,13 @@ public class Program
         var logger = host.Services.GetRequiredService<ILogger<Program>>();
         var config = host.Services.GetRequiredService<IConfiguration>();
         var metrics = host.Services.GetRequiredService<IngestionMetrics>();
+        var environment = host.Services.GetRequiredService<IHostEnvironment>();
 
         // Log application startup with configuration summary
         logger.LogInformation(LogEvents.ApplicationStarting, 
             "FinalTest Log Ingest service starting...");
+        
+        logger.LogInformation("Environment: {EnvironmentName}", environment.EnvironmentName);
 
         var watcherSection = config.GetSection("Watcher");
         var databaseSection = config.GetSection("Database");
