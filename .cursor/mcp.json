@@ -33,7 +33,7 @@
             "args": ["-y", "dotenv", "-e", ".env", "--", "mcp-git-server"]
         },
         "GitHub": {
-            "command": "docker",
+            "command": "docker", 
             "args": [
                 "run",
                 "-i",
