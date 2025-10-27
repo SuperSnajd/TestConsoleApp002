@@ -81,13 +81,17 @@ public class Program
         var watcherSection = config.GetSection("Watcher");
         var databaseSection = config.GetSection("Database");
 
+        // Extract database name from connection string
+        var connectionString = databaseSection["ConnectionString"] ?? "";
+        var databaseName = ExtractDatabaseName(connectionString);
+
         logger.LogInformation(LogEvents.StartupSummary,
             "Startup Configuration - Watch Path: {WatchPath}, Filter: {Filter}, " +
             "Database: {DatabaseName}, Schema: {SchemaName}, Auto Create: {AutoCreate}",
             watcherSection["Path"],
             watcherSection["Filter"],
-            databaseSection["DatabaseName"],
-            databaseSection["SchemaName"],
+            databaseName,
+            databaseSection["Schema"],
             databaseSection["AutoCreate"]);
 
         logger.LogInformation(LogEvents.ApplicationStarted, 
@@ -106,5 +110,21 @@ public class Program
 
         logger.LogInformation(LogEvents.ApplicationStopped, 
             "FinalTest Log Ingest service stopped");
+    }
+
+    private static string ExtractDatabaseName(string connectionString)
+    {
+        // Simple parser to extract Database value from connection string
+        var parts = connectionString.Split(';', StringSplitOptions.RemoveEmptyEntries);
+        foreach (var part in parts)
+        {
+            var keyValue = part.Split('=', 2);
+            if (keyValue.Length == 2 && 
+                keyValue[0].Trim().Equals("Database", StringComparison.OrdinalIgnoreCase))
+            {
+                return keyValue[1].Trim();
+            }
+        }
+        return "unknown";
     }
 }

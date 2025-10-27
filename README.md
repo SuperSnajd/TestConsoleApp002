@@ -83,15 +83,26 @@ mkdir -p /cursor/data/incoming /cursor/data/archive /cursor/data/error
 ### 4. Run the Application
 
 ```bash
+# IMPORTANT: You must run from inside the FinalTestLogIngest directory
+cd FinalTestLogIngest
+
 # Development mode (uses appsettings.Development.json)
 # The launchSettings.json automatically sets DOTNET_ENVIRONMENT=Development
-dotnet run --project FinalTestLogIngest
+dotnet run
 
-# Alternatively, you can explicitly set the environment:
-dotnet run --project FinalTestLogIngest --environment Development
+# Alternatively, you can explicitly set the environment variable:
+# Windows PowerShell:
+$env:DOTNET_ENVIRONMENT="Development"; dotnet run
+
+# Linux/Mac:
+DOTNET_ENVIRONMENT=Development dotnet run
 
 # Production mode (uses appsettings.Production.json)
-dotnet run --project FinalTestLogIngest --environment Production
+# Windows PowerShell:
+$env:DOTNET_ENVIRONMENT="Production"; dotnet run
+
+# Linux/Mac:
+DOTNET_ENVIRONMENT=Production dotnet run
 ```
 
 ### 5. Test the Application
@@ -99,11 +110,11 @@ dotnet run --project FinalTestLogIngest --environment Production
 Drop a test log file into the watch directory:
 
 ```bash
-# Copy the example file
-copy "Example file\Example testlog file.txt" C:\cursor\data\incoming\test.log
+# Windows - Copy the example file (run from repository root)
+copy "Example file\Example testlog file.txt" C:\cursor\data\incoming\test.txt
 
 # Or on Linux/Mac
-cp "Example file/Example testlog file.txt" /cursor/data/incoming/test.log
+cp "Example file/Example testlog file.txt" /cursor/data/incoming/test.txt
 ```
 
 Watch the console output for processing logs.
@@ -265,23 +276,28 @@ FinalTestLogIngest/
 ### Development Mode
 
 ```bash
-# Start the development database
+# Start the development database (from repository root)
 docker-compose -f docker-compose.dev.yml up -d
 
-# Run the application
+# Run the application (must be run from within project directory)
 cd FinalTestLogIngest
-dotnet run --environment Development
+dotnet run
 ```
 
 ### Production Mode
 
 ```bash
-# Start the production database
+# Start the production database (from repository root)
 docker-compose -f docker-compose.prod.yml up -d
 
-# Run the application
+# Run the application (must be run from within project directory)
 cd FinalTestLogIngest
-dotnet run --environment Production
+
+# Windows PowerShell:
+$env:DOTNET_ENVIRONMENT="Production"; dotnet run
+
+# Linux/Mac:
+DOTNET_ENVIRONMENT=Production dotnet run
 ```
 
 ### Stopping the Application
